@@ -34,7 +34,7 @@ class MainThread(threading.Thread):
                         self.thread_pool.submit(self.consume_check, task.user.id, task)
 
                         if hour >= 23:
-                            sent_date = self.class_database_op.get_redis_kv(userId, 'daily-consume-notice-sent')
+                            sent_date = self.class_database_op.get_redis_kv(task.user.id, 'daily-consume-notice-sent')
                             if not sent_date:
                                 self.class_database_op.set_redis_kv(task.user.id, 'daily-consume-notice-sent', today)
                                 self.thread_pool.submit(self.consume_check, task.user.id, task)

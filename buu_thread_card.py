@@ -37,11 +37,12 @@ class MainThread(threading.Thread):
                             sent_date = self.class_database_op.get_redis_kv(task.user.id, 'daily-consume-notice-sent')
                             if not sent_date:
                                 self.class_database_op.set_redis_kv(task.user.id, 'daily-consume-notice-sent', today)
-                                self.thread_pool.submit(self.consume_check, task.user.id, task)
+                                self.thread_pool.submit(self.daily_consume_notice, task.user.id, task)
                             else:
-                                if sent_date is not today:
+                                sent_date = sent_date.decode('utf-8')
+                                if sent_date != today:
                                     self.class_database_op.set_redis_kv(task.user.id, 'daily-consume-notice-sent', today)
-                                    self.thread_pool.submit(self.consume_check, task.user.id, task)
+                                    self.thread_pool.submit(self.daily_consume_notice, task.user.id, task)
                 except Exception:
                     import traceback
                     traceback.print_exc()

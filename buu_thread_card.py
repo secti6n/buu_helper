@@ -80,7 +80,7 @@ class MainThread(threading.Thread):
             last_order = int(last_order)
         put_order_count = 0
         for item in ret_list:
-            if not last_order:
+            if last_order:
                 if item['count'] > last_order:
                     # 开始提醒
                     intent = '其他'
